@@ -15,10 +15,20 @@ type NewArticle = {
 const router = express.Router();
 
 router.get('/articles', async (req, res) => {
-    const articles: Article[] = await Article.findAll();
-    return res.status(200).json(articles);
+    const { location } = req.query;
+    if (location) {
+        const articles = await Article.findAll({
+            where: {
+                location: location, //location: "@@시"같은거 말고 location으로 하면 입력된거 기준으로 댐
+            },
+        });
+        return res.status(200).json(articles);
+    }
+    else {
+        const articles: Article[] = await Article.findAll();
+        return res.status(200).json(articles);
+    }
 });
-
 
 router.post('/articles', async (req, res) => {
     const article = req.body as NewArticle;
