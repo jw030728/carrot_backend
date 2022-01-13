@@ -2,6 +2,8 @@ import express from 'express';  //js에서 많이 사용하는 서버 프레임�
 import { createServer, Server } from 'http';
 import controller from './controller';
 import database from './config/database';
+import bodyParser from "body-parser";
+import cors from "cors"
 
 const app = express();
 
@@ -9,6 +11,8 @@ const app = express();
 database.sync({
     alter: true, //구조가 다르면 내가 만든거 기준으로 강제로 맞춰버림(사용에 주의할것)
 });
+
+app.use(cors()); //서버로 오는 모든 것을 허용
 
 app.use(express.json());
 app.use(controller);    //실행될때 controller를 씀

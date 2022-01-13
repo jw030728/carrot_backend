@@ -14,6 +14,24 @@ type NewArticle = {
 
 const router = express.Router();
 
+router.get('/:articles/:articleId', async (req, res) => {
+    const { articleId } = req.params;
+    if (!articleId) {
+        return res.status(400).json();
+    }
+    const articleIdNumber: number = parseInt(articleId, 10);
+    const article: Article | null = await Article.findByPk(articleIdNumber);
+    // const article: Article | null = await Article.findOne({
+    //     where:{
+    //         id:articleIdNumber,
+    //     },
+    // });
+    if (!article) {
+        return res.status(404).json();
+    }
+    return res.status(200).json(article);
+})
+
 router.get('/articles', async (req, res) => {
     const { location } = req.query;
     if (location) {
